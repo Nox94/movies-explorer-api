@@ -2,16 +2,22 @@
   "name": "movies-explorer-api",
   "version": "1.0.0",
   "description": "Бэкэнд-часть дипломного проекта",
-  "main": ".eslintrc.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "lint": "npx eslint . --ignore-pattern 'node_modules' --fix",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Nox94/movies-explorer-api.git"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "Evgenia Amelina",
+    "email": "shkarina.evgenia@yandex.ru"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Nox94/movies-explorer-api/issues"
@@ -19,5 +25,8 @@
   "homepage": "https://github.com/Nox94/movies-explorer-api#readme",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
