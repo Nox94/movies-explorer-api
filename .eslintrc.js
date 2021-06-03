@@ -10,7 +10,6 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'no-unused-vars': 'off',
     'no-underscore-dangle': ['error', { allow: ['_id'] }],
     'no-console': 'off',
   },
