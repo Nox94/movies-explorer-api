@@ -1,0 +1,23 @@
+{
+  "name": "movies-explorer-api",
+  "version": "1.0.0",
+  "description": "Бэкэнд-часть дипломного проекта",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nox94/movies-explorer-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nox94/movies-explorer-api/issues"
+  },
+  "homepage": "https://github.com/Nox94/movies-explorer-api#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
