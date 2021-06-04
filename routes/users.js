@@ -1,6 +1,11 @@
 const router = require('express').Router();
+const { celebrate, Joi } = require('celebrate');
+const { getUsersProfileInfo, updateUsersProfile } = require('../controllers/users');
 
-// тут будут подключены контроллеры для роутов
-
-router.get('/me', _methodname);
-router.patch('/me', _methodname);
+router.get('/me', getUsersProfileInfo);
+router.patch('/me', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+  }),
+}), updateUsersProfile);
+module.exports = router;
