@@ -5,7 +5,7 @@ const NotFound = require('../errors/NotFound'); // 404
 
 // возвращает все сохранённые пользователем фильмы
 // GET /movies
-module.exports.getAllMovies = (req, res, next) => {
+module.exports.getAllUsersMovies = (req, res, next) => {
   Movie.find({}).then((movies) => {
     if (!movies) {
       next(new NotFound('Фильмы не найдены.'));

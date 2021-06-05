@@ -20,6 +20,7 @@ if (process.env.NODE_ENV !== 'production') {
   console.log('Код запущен в режиме разработки');
 }
 
+// собирает все входящие данные в json формат
 app.use(express.json());
 
 app.post(
@@ -58,7 +59,7 @@ app.use((err, req, res, next) => {
   next();
 });
 
+// Если всё работает, консоль покажет, какой порт приложение слушает
 app.listen(PORT, () => {
-  // Если всё работает, консоль покажет, какой порт приложение слушает
   console.log(`App listening on port ${PORT}`);
 });
