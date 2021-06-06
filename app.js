@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const routes = require('./routes');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
 
@@ -17,9 +18,11 @@ mongoose.connect(MONGO_URL, {
 if (process.env.NODE_ENV !== 'production') {
   console.log('Код запущен в режиме разработки');
 }
-// собирает все входящие данные в json формат
+
 app.use(express.json());
+app.use(requestLogger);
 app.use(routes);
+app.use(errorLogger);
 app.use(errors());
 
 app.use((err, req, res, next) => {
