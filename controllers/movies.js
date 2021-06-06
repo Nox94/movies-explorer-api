@@ -50,15 +50,15 @@ module.exports.createMovie = (req, res, next) => {
 // удаляет сохранённый фильм по id
 // DELETE /movies/movieId
 module.exports.deleteMovieById = (req, res, next) => {
-  const { movieId } = req.params;
+  const { _id } = req.params;
   const userId = req.user._id;
-  Movie.findById(movieId).then((movie) => {
+  Movie.findById(_id).then((movie) => {
     if (!movie) {
       next(new NotFound('Фильм с таким id не найден'));
     } else if (movie.owner._id.toString() !== userId) {
       next(new Forbidden('Нельзя удалить фильм из чужой подборки.'));
     } else {
-      Movie.findByIdAndRemove(movieId).then((video) => {
+      Movie.findByIdAndRemove(_id).then((video) => {
         if (!video) {
           next(new NotFound('Фильм не найден.'));
         } else {
