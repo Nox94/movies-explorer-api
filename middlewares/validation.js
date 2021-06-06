@@ -58,4 +58,24 @@ const validateUsersBody = celebrate({
   }),
 });
 
-module.exports = { validateMovieBody, validateMovieObjectId, validateUsersBody };
+const validateUserBodyBeforeCreation = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().min(2).max(30),
+    password: Joi.string().required().min(2).max(30),
+  }),
+});
+
+const validateUsersBodyBeforeLogin = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().min(2).max(30),
+    password: Joi.string().required().min(2).max(30),
+  }),
+});
+
+module.exports = {
+  validateMovieBody,
+  validateMovieObjectId,
+  validateUsersBody,
+  validateUserBodyBeforeCreation,
+  validateUsersBodyBeforeLogin,
+};
