@@ -4,6 +4,9 @@ const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
 const { login, createUser } = require('./controllers/users');
 const NotFound = require('./errors/NotFound');
+const auth = require('./middlewares/auth');
+const users = require('./routes/users');
+const movies = require('./routes/movies');
 
 const app = express();
 
@@ -43,6 +46,9 @@ app.post(
   }),
   login,
 );
+
+app.use('/users', auth, users);
+app.use('/movies', auth, movies);
 
 app.use('*', (req, res, next) => {
   next(new NotFound('Запрашиваемая страница не найдена.'));
