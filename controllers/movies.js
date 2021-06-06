@@ -56,9 +56,9 @@ module.exports.deleteMovieById = (req, res, next) => {
     if (!movie) {
       next(new NotFound('Фильм с таким id не найден'));
     } else if (movie.owner._id.toString() !== userId) {
-      next(new Forbidden('Нельзя удалить фильм из чужой подборки.'));
+      return next(new Forbidden('Нельзя удалить чужой фильм.'));
     } else {
-      Movie.findByIdAndRemove(_id).then((video) => {
+      return Movie.remove().then((video) => {
         if (!video) {
           next(new NotFound('Фильм не найден.'));
         } else {

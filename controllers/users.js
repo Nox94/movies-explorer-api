@@ -78,8 +78,9 @@ module.exports.getUsersProfileInfo = (req, res, next) => User.findOne({ _id: req
   .then((user) => {
     if (!user) {
       throw new Unauthorized('Необходима авторизация.');
+    } else {
+      res.send(user);
     }
-    res.send(user);
   })
   .catch(next);
 
