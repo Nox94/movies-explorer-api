@@ -4,7 +4,7 @@ const NotFound = require('../errors/NotFound');
 const auth = require('../middlewares/auth');
 const users = require('./users');
 const movies = require('./movies');
-const { validateUserBodyBeforeCreation, validateUsersBodyBeforeLogin } = require('../middlewares/validation');
+const { validateUserBodyBeforeCreation, validateUsersBodyBeforeLogin } = require('../middlewares/celebrateValidation');
 
 router.post(
   '/signup',

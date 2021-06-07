@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-// ошибки
 const BadRequest = require('../errors/BadRequest'); // 400
 const Unauthorized = require('../errors/Unauthorized'); // 401
 const NotFound = require('../errors/NotFound'); // 404
