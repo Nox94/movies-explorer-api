@@ -2,4 +2,4 @@
 Бэкэнд-часть дипломного проекта
 
 # Домен бэкенда
-api.nox-movies-explorer.nomoredomains.icu
+https://api.nox-movies-explorer.nomoredomains.icu
