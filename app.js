@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const routes = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
 
@@ -24,17 +25,8 @@ app.use(requestLogger);
 app.use(routes);
 app.use(errorLogger);
 app.use(errors());
+app.use(errorHandler);
 
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-  console.log(err);
-  res.status(statusCode).send({
-    message: statusCode === 500 ? 'Ошибка сервера.' : message,
-  });
-  next();
-});
-
-// Если всё работает, консоль покажет, какой порт приложение слушает
 app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
+  console.log(`Приложение слушает ${PORT} порт.`);
 });
