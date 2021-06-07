@@ -45,16 +45,16 @@ module.exports.createMovie = (req, res, next) => {
     thumbnail,
     movieId,
     owner,
-  }).then((movie) => res.status(201).send(movie).catch((err) => next(err)));
+  }).then((movie) => res.send(movie).catch((err) => next(err)));
 };
 // удаляет сохранённый фильм по id
 // DELETE /movies/movieId
 module.exports.deleteMovieById = (req, res, next) => {
-  const { id } = req.params;
+  const { _id } = req.params;
   const userId = req.user._id;
-  Movie.findById(id).then((movie) => {
+  Movie.findById(_id).then((movie) => {
     if (!movie) {
-      next(new NotFound('Фильм с таким id не найден'));
+      next(new NotFound('Фильм с таким id не найден.'));
     } else if (movie.owner._id.toString() !== userId) {
       return next(new Forbidden('Нельзя удалить чужой фильм.'));
     } else {

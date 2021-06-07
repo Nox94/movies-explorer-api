@@ -6,7 +6,7 @@ const validateMovieBody = celebrate({
   body: Joi.object().keys({
     country: Joi.string().required().min(2).max(30),
     director: Joi.string().required().min(2).max(30),
-    duration: Joi.number().required().min(2).max(3),
+    duration: Joi.number().required().integer().min(2),
     year: Joi.string().required().min(4).max(4),
     description: Joi.string().required().min(2).max(200),
     image: Joi.string()
@@ -26,9 +26,9 @@ const validateMovieBody = celebrate({
         return helpers.message('Введены некорректные данные ссылки на трейлер.');
       }),
     nameRU: Joi.string().required().min(2).max(50)
-      .regex(/^[А-ЯЁ][а-яё]*$/),
+      .regex(/^[А-ЯЁ][а-яё]+$/),
     nameEN: Joi.string().required().min(2).max(50)
-      .regex(/^[a-zA-Z]*$/),
+      .regex(/^[a-zA-Z]+$/),
     thumbnail: Joi.string()
       .required().custom((value, helpers) => {
         const isValid = validator.isURL(value, { require_protocol: true });
@@ -43,11 +43,11 @@ const validateMovieBody = celebrate({
 
 const validateMovieObjectId = celebrate({
   params: Joi.object().keys({
-    id: Joi.string().required().custom((value, helpers) => {
+    _id: Joi.string().required().custom((value, helpers) => {
       if (ObjectId.isValid(value)) {
         return value;
       }
-      return helpers.message('Невалидный id');
+      return helpers.message('Передан невалидный _id.');
     }),
   }),
 });
@@ -60,6 +60,7 @@ const validateUsersBody = celebrate({
 
 const validateUserBodyBeforeCreation = celebrate({
   body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
     email: Joi.string().required().min(2).max(30),
     password: Joi.string().required().min(2).max(30),
   }),
