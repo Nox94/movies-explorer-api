@@ -14,26 +14,24 @@ module.exports.login = (req, res, next) => {
     .select('+password')
     .then((user) => {
       if (!user) {
-        next(new BadRequest('Неправильные почта или пароль'));
-      } else {
-        bcrypt
-          .compare(password, user.password)
-          .then((matched) => {
-          // boolean
-            if (!matched) {
-              next(new BadRequest('Неправильные почта или пароль'));
-            } else {
-              const token = jwt.sign(
-                { _id: user._id },
-                NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
-                {
-                  expiresIn: '7d',
-                },
-              );
-              res.status(200).send({ _id: user._id, token });
-            }
-          });
+        return next(new BadRequest('Неправильные почта или пароль'));
       }
+      return bcrypt
+        .compare(password, user.password)
+        .then((matched) => {
+          // boolean
+          if (!matched) {
+            return next(new BadRequest('Неправильные почта или пароль'));
+          }
+          const token = jwt.sign(
+            { _id: user._id },
+            NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+            {
+              expiresIn: '7d',
+            },
+          );
+          res.status(200).send({ _id: user._id, token });
+        });
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'BadRequest') {
