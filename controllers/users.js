@@ -30,7 +30,7 @@ module.exports.login = (req, res, next) => {
               expiresIn: '7d',
             },
           );
-          res.status(200).send({ _id: user._id, token });
+          return res.status(200).send({ _id: user._id, token });
         });
     })
     .catch((err) => {
@@ -52,7 +52,7 @@ module.exports.createUser = (req, res, next) => {
       name,
       email,
       password: hash, // хеш записан в базу
-    }).then((user) => res.status(201).send(user)))
+    }).then((user) => res.status(201).send({ name: user.name, email: user.email })))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(
@@ -83,7 +83,10 @@ module.exports.getUsersProfileInfo = (req, res, next) => User.findOne({ _id: req
 module.exports.updateUsersProfile = (req, res, next) => {
   User.findByIdAndUpdate(
     req.user._id,
-    { name: req.body.name },
+    {
+      name: req.body.name,
+      email: req.body.email,
+    },
     { new: true, runValidators: true },
   )
     .then((user) => {
