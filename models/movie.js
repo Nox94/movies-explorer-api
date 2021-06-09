@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const user = require('./user');
+const errorMessagesText = require('../utils/errorMessagesText');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -28,7 +29,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: [
       validator.isURL,
-      'Введена некорректная ссылка на постер к фильму.',
+      errorMessagesText.incorrectImageLinkText,
     ],
   },
   trailer: {
@@ -36,7 +37,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: [
       validator.isURL,
-      'Введена некорректная ссылка на трейлер фильма.',
+      errorMessagesText.incorrectTrailerLinkText,
     ],
   },
   thumbnail: {
@@ -44,7 +45,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: [
       validator.isURL,
-      'Введена некорректная ссылка на миниатюру постера.',
+      errorMessagesText.incorrectThumbnailLinkText,
     ],
   },
   owner: {

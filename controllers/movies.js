@@ -2,21 +2,17 @@ const Movie = require('../models/movie');
 const BadRequest = require('../errors/BadRequest'); // 400
 const Forbidden = require('../errors/Forbidden'); // 403
 const NotFound = require('../errors/NotFound'); // 404
+const errorMessagesText = require('../utils/errorMessagesText');
 
-// возвращает все сохранённые пользователем фильмы
-// GET /movies
 module.exports.getAllUsersMovies = (req, res, next) => {
   Movie.find({}).then((movies) => {
     if (!movies) {
-      next(new NotFound('Фильмы не найдены.'));
-    } else {
-      res.send(movies);
+      return next(new NotFound(errorMessagesText.notFoundMoviesText));
     }
+    return res.send(movies);
   }).catch(next);
 };
 
-// создаёт фильм с переданными в теле данными
-// POST /movies
 module.exports.createMovie = (req, res, next) => {
   const owner = req.user._id;
   const {
@@ -47,30 +43,26 @@ module.exports.createMovie = (req, res, next) => {
     owner,
   }).then((movie) => res.send(movie).catch((err) => next(err)));
 };
-// удаляет сохранённый фильм по id
-// DELETE /movies/movieId
+
 module.exports.deleteMovieById = (req, res, next) => {
   const { _id } = req.params;
   const userId = req.user._id;
   Movie.findById(_id).then((movie) => {
     if (!movie) {
-      next(new NotFound('Фильм с таким id не найден.'));
-    } else if (movie.owner._id.toString() !== userId) {
-      return next(new Forbidden('Нельзя удалить чужой фильм.'));
-    } else {
-      return Movie.remove().then((video) => {
-        if (!video) {
-          next(new NotFound('Фильм не найден.'));
-        } else {
-          res.send('Фильм успешно удален.');
-        }
-      }).catch((err) => {
-        if (err.name === 'BadRequestError') {
-          next(new BadRequest('Введены некорректные данные.'));
-        } else {
-          next(err);
-        }
-      });
+      return next(new NotFound(errorMessagesText.notFoundMovieByIdText));
+    } if (movie.owner._id.toString() !== userId) {
+      return next(new Forbidden(errorMessagesText.notYourMovieText));
     }
+    return Movie.remove().then((video) => {
+      if (!video) {
+        return next(new NotFound(errorMessagesText.notFoundMovieText));
+      }
+      return res.send(errorMessagesText.succesfullRemovingText);
+    }).catch((err) => {
+      if (err.name === 'BadRequestError') {
+        return next(new BadRequest(errorMessagesText.incorrectDataText));
+      }
+      return next(err);
+    });
   }).catch(next);
 };

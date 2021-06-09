@@ -1,6 +1,7 @@
 const { celebrate, Joi } = require('celebrate');
 const validator = require('validator');
 const { ObjectId } = require('mongoose').Types;
+const errorMessagesText = require('../utils/errorMessagesText');
 
 const validateMovieBody = celebrate({
   body: Joi.object().keys({
@@ -15,7 +16,7 @@ const validateMovieBody = celebrate({
         if (isValid) {
           return value;
         }
-        return helpers.message('Введены некорректные данные ссылки на изображение.');
+        return helpers.message(errorMessagesText.incorrectImageLinkText);
       }),
     trailer: Joi.string()
       .required().custom((value, helpers) => {
@@ -23,7 +24,7 @@ const validateMovieBody = celebrate({
         if (isValid) {
           return value;
         }
-        return helpers.message('Введены некорректные данные ссылки на трейлер.');
+        return helpers.message(errorMessagesText.incorrectTrailerLinkText);
       }),
     nameRU: Joi.string().required().min(2).max(50)
       .regex(/^[А-ЯЁ][а-яё]+$/),
@@ -35,7 +36,7 @@ const validateMovieBody = celebrate({
         if (isValid) {
           return value;
         }
-        return helpers.message('Введены некорректные данные ссылки на миниатюру изображения.');
+        return helpers.message(errorMessagesText.incorrectThumbnailLinkText);
       }),
     movieId: Joi.number().required().min(1),
   }),
@@ -47,7 +48,7 @@ const validateMovieObjectId = celebrate({
       if (ObjectId.isValid(value)) {
         return value;
       }
-      return helpers.message('Передан невалидный _id.');
+      return helpers.message(errorMessagesText.invalidIdText);
     }),
   }),
 });

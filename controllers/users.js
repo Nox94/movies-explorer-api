@@ -5,6 +5,7 @@ const BadRequest = require('../errors/BadRequest'); // 400
 const Unauthorized = require('../errors/Unauthorized'); // 401
 const NotFound = require('../errors/NotFound'); // 404
 const Conflict = require('../errors/Conflict '); // 409
+const errorMessagesText = require('../utils/errorMessagesText');
 
 module.exports.login = (req, res, next) => {
   const { NODE_ENV, JWT_SECRET } = process.env;
@@ -13,14 +14,14 @@ module.exports.login = (req, res, next) => {
     .select('+password')
     .then((user) => {
       if (!user) {
-        return next(new BadRequest('Неправильные почта или пароль'));
+        return next(new BadRequest(errorMessagesText.wrongLoginData));
       }
       return bcrypt
         .compare(password, user.password)
         .then((matched) => {
           // boolean
           if (!matched) {
-            return next(new BadRequest('Неправильные почта или пароль'));
+            return next(new BadRequest(errorMessagesText.wrongLoginData));
           }
           const token = jwt.sign(
             { _id: user._id },
@@ -34,7 +35,7 @@ module.exports.login = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'BadRequest') {
-        next(new BadRequest('Введены некорректные данные при попытке авторизоваться.'));
+        next(new BadRequest(errorMessagesText.wrongAuthData));
       } else {
         next(err);
       }
@@ -55,14 +56,10 @@ module.exports.createUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return next(
-          new BadRequest(
-            'Переданы некорректные данные при создании пользователя.',
-          ),
+          new BadRequest(errorMessagesText.wrongDataForCreation),
         );
       } if (err.name === 'MongoError' && err.code === 11000) {
-        return next(
-          new Conflict('Пользователь с таким Email уже зарегистрирован.'),
-        );
+        return next(new Conflict(errorMessagesText.emailConflictText));
       }
       return next(err);
     });
@@ -71,7 +68,7 @@ module.exports.createUser = (req, res, next) => {
 module.exports.getUsersProfileInfo = (req, res, next) => User.findOne({ _id: req.user._id })
   .then((user) => {
     if (!user) {
-      throw new Unauthorized('Необходима авторизация.');
+      throw new Unauthorized(errorMessagesText.authNecessityText);
     } else {
       res.send(user);
     }
@@ -89,17 +86,13 @@ module.exports.updateUsersProfile = (req, res, next) => {
   )
     .then((user) => {
       if (!user) {
-        next(new NotFound('Пользователь по указанному id не найден.'));
+        next(new NotFound(errorMessagesText.notFoundIdText));
       } else {
         res.status(200).send(user);
       }
     }).catch((err) => {
       if (err.name === 'ValidationError') {
-        next(
-          new BadRequest(
-            'Переданы некорректные данные при обновлении профиля.',
-          ),
-        );
+        next(new BadRequest(errorMessagesText.wrongDataforUpdate));
       } else {
         next(err);
       }
