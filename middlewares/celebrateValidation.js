@@ -9,7 +9,7 @@ const validateMovieBody = celebrate({
     director: Joi.string().required().min(2).max(30),
     duration: Joi.number().required().integer().min(2),
     year: Joi.string().required().min(4).max(4),
-    description: Joi.string().required().min(2).max(200),
+    description: Joi.string().required().min(2).max(1000),
     image: Joi.string()
       .required().custom((value, helpers) => {
         const isValid = validator.isURL(value, { require_protocol: true });
@@ -26,10 +26,10 @@ const validateMovieBody = celebrate({
         }
         return helpers.message(errorMessagesText.incorrectTrailerLinkText);
       }),
-    nameRU: Joi.string().required().min(2).max(50)
-      .regex(/^[А-ЯЁ][а-яё]+$/),
+    nameRU: Joi.string().required().min(2).max(100)
+      .regex(/^[a-zA-ZА-ЯЁа-яё\s\d-–:.,?«»`'&:!’\-—*]+$/),
     nameEN: Joi.string().required().min(2).max(50)
-      .regex(/^[a-zA-Z]+$/),
+      .regex(/^[a-zA-Z\s\d-–:.,?«»`'&:!’\-Х—*äöüßÄÖÜ]+$/),
     thumbnail: Joi.string()
       .required().custom((value, helpers) => {
         const isValid = validator.isURL(value, { require_protocol: true });

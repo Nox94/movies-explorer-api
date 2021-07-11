@@ -1,5 +1,9 @@
-const router = require('express').Router();
-const { validateMovieBody, validateMovieObjectId } = require('../middlewares/celebrateValidation');
+const router = require('express')
+  .Router();
+const {
+  validateMovieBody,
+  validateMovieObjectId,
+} = require('../middlewares/celebrateValidation');
 const {
   getAllUsersMovies,
   createMovie,
