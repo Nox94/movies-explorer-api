@@ -30,6 +30,7 @@ module.exports.createMovie = (req, res, next) => {
     thumbnail,
     movieId,
   } = req.body;
+  console.log(trailer, typeof trailer);
   Movie.create({
     country,
     director,
@@ -44,8 +45,8 @@ module.exports.createMovie = (req, res, next) => {
     movieId,
     owner,
   })
-    .then((movie) => res.send(movie)
-      .catch((err) => next(err)));
+    .then((movie) => res.send(movie))
+    .catch((err) => next(err));
 };
 
 module.exports.deleteMovieById = (req, res, next) => {
