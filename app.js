@@ -31,6 +31,7 @@ const whitelist = [
   'http://localhost:3001',
   'http://192.168.1.178:3001',
   'https://nox-movies-explorer.nomoredomains.icu',
+  'http://nox-movies-explorer.nomoredomains.icu',
 ];
 
 const corsOptionsDelegate = function (req, callback) {
